@@ -1,63 +1,31 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "lists.h"
 
-/* Definition for singly-linked list. */
-typedef struct listint_s {
-    int n;
-    struct listint_s *next;
-} listint_t;
+/**
+ * check_cycle - check for loop in LL
+ * @list: head of linked list
+ *
+ * Description - check for loops in LL
+ * Return: 1 if cycled, 0 if not
+ */
 
-/* Function to check if a singly linked list has a cycle. */
-int check_cycle(listint_t *list) {
-    listint_t *slow = list, *fast = list;
+int check_cycle(listint_t *list)
+{
+	listint_t *slow, *fast;
 
-    while (slow != NULL && fast != NULL && fast->next != NULL) {
-        slow = slow->next;          /* Move one step at a time */
-        fast = fast->next->next;    /* Move two steps at a time */
-
-        /* If there is a cycle, the fast pointer will eventually catch up with the slow pointer. */
-        if (slow == fast) {
-            return 1; /* Cycle detected */
-        }
-    }
-
-    return 0; /* No cycle found */
-}
-
-/* Example usage */
-int main(void) {
-    /* Create a linked list with a cycle */
-    listint_t *head, *node1, *node2, *node3;
-
-    head = malloc(sizeof(listint_t));
-    node1 = malloc(sizeof(listint_t));
-    node2 = malloc(sizeof(listint_t));
-    node3 = malloc(sizeof(listint_t));
-
-    head->n = 1;
-    node1->n = 2;
-    node2->n = 3;
-    node3->n = 4;
-
-    head->next = node1;
-    node1->next = node2;
-    node2->next = node3;
-    node3->next = node1;  /* Cycle: node3 points back to node1 */
-
-    /* Check if there is a cycle */
-    int result = check_cycle(head);
-
-    /* Print the result */
-    if (result)
-        printf("Cycle detected.\n");
-    else
-        printf("No cycle found.\n");
-
-    /* Free allocated memory */
-    free(node3);
-    free(node2);
-    free(node1);
-    free(head);
-
-    return 0;
+	if (!list)
+	{
+		return (0);
+	}
+	slow = list;
+	fast = list->next;
+	while (fast && slow && fast->next)
+	{
+		if (slow == fast)
+		{
+			return (1);
+		}
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	return (0);
 }
